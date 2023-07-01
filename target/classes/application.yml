@@ -1,0 +1,61 @@
+server:
+  port: 8086
+jwt_secret: nagarajujunnaadwikaayanshswethavarunkumarsreen22221dsdsdsdsdsdsdsdsdsdsd
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: localhost
+springdoc:
+  api-docs:
+    enabled: true
+    swagger-ui:
+      configUrl: ${server.servlet.contextPath}/v3/api-docs/swagger-config
+      url: ${server.servlet.contextPath}/v3/api-docs
+      urls:
+        - name: customer-service
+          url: /customer/v1/api-docs
+        - name: cart-service
+          url: /cart/v3/api-docs
+        - name: product-service
+          url: /product/v1/api-docs
+spring:
+  application:
+    name: gateway-service
+  datasource:
+    password: root
+    url: jdbc:mysql://localhost:3306/e-user?useSSL=true
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: 'update '
+    show-sql: true
+  cloud:
+    gateway:
+      routes:
+        - id: admin-service
+          uri: http://localhost:8081
+          predicates:
+            - Path= /admin/**
+        - id: customer-service
+          uri: http://localhost:8082
+          predicates:
+            - Path= /customer/**
+          filters:
+            - RewritePath=/board/(?<path>.*), /$\{path}
+        - id: product-service
+          uri: http://localhost:8083
+          predicates:
+            - Path= /product/**
+        - id: order-service
+          uri: http://localhost:8084
+          predicates:
+            - Path= /order/**
+        - id: payment-service
+          uri: http://localhost:8085
+          predicates:
+            - Path= /payment/**
+
+
+

@@ -1,4 +1,6 @@
-FROM openjdk:8.0
-EXPOSE 8085
-ADD target/security-service-0.0.1-SNAPSHOT.jar security-service
-ENTRYPOINT ["java","-jar","security-service"]
+#FROM maven:3-jdk-11 as builder
+#RUN mvn clean install
+FROM openjdk:17
+EXPOSE 8083
+ADD target/product-service-0.0.1-SNAPSHOT.jar product-service
+ENTRYPOINT ["java","-jar","product-service"]
